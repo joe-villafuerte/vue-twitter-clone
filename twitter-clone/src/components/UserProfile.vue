@@ -6,8 +6,14 @@
       <div class="user-profile__follower-count">
         <strong>Followers:</strong> {{ followers }}
       </div>
-      <form class="user-profile__create-tweet" @submit.prevent="createNewTweet">
-        <label for="newTweet"><strong>New Tweet</strong></label>
+      <form
+        class="user-profile__create-tweet"
+        @submit.prevent="createNewTweet"
+        :class="{ exceeded: newTweetCharacterCount > 180 }"
+      >
+        <label for="newTweet"
+          ><strong>New Tweet</strong> ({{ newTweetCharacterCount }}/180)</label
+        >
         <textarea name="newTweet" rows="4" v-model="newTweetContent"></textarea>
 
         <div class="user-profile__create-tweet-type">
@@ -54,7 +60,7 @@ export default {
       followers: 0,
       user: {
         id: 1,
-        username: "_itsyoume",
+        username: "_itsyourname",
         firstName: "Hey",
         lastName: "Villa",
         email: "joe@joe.com",
@@ -76,6 +82,9 @@ export default {
   computed: {
     fullName() {
       return `${this.user.firstName} ${this.user.lastName}`;
+    },
+    newTweetCharacterCount() {
+      return this.newTweetContent.length;
     },
   },
   methods: {
@@ -134,6 +143,11 @@ export default {
 
 h1 {
   margin: 0;
+}
+
+.exceeded {
+  color: red;
+  background: red;
 }
 
 .user-profile__tweets-wrapper {
